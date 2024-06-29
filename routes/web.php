@@ -20,8 +20,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-Route::get('/agent/dashboard', [AgentController::class, 'dashboard']);
-Route::get('/user/dashboard', [UserController::class, 'dashboard']);
+// Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+// Route::get('/agent/dashboard', [AgentController::class, 'dashboard']);
+// Route::get('/user/dashboard', [UserController::class, 'dashboard']);
+
+Route::middleware(['role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+});
+
+Route::middleware(['role:agent'])->group(function () {
+    Route::get('/agent/dashboard', [AgentController::class, 'dashboard']);
+});
+
+Route::middleware(['role:user'])->group(function () {
+    Route::get('user/dashboard', [UserController::class, 'dashboard']);
+});
+
 
 require __DIR__.'/auth.php';
